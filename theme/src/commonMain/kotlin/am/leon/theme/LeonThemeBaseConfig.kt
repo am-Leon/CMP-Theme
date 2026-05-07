@@ -60,21 +60,33 @@ import am.leon.theme.TextFieldColors
  *  ## COLOR FILLING GUIDE — Where each semantic slot reflects in the UI
  * ══════════════════════════════════════════════════
  *
- * | Field               | Typical UI Elements                                      |
- * |---------------------|----------------------------------------------------------|
- * | [LeonColors.primaryColors]     | Main CTA buttons, active navigation, progress, links       |
- * | [LeonColors.secondaryColors]   | Secondary actions, filters, alternative buttons, promo    |
- * | [LeonColors.tertiaryColors]    | Calendar selections, accent chips, decorative highlights  |
- * | [LeonColors.errorColors]       | Validation errors, destructive actions, critical alerts   |
- * | [LeonColors.successColors]     | Success toasts, completed states, positive badges         |
- * | [LeonColors.warningColors]     | Caution banners, unsaved changes, medium-severity alerts  |
- * | [LeonColors.infoColors]        | Help tooltips, info banners, blue badges, hints           |
- * | [LeonColors.backgroundColors]  | Page backgrounds, cards, dividers                         |
- * | [LeonColors.textColors]        | All text hierarchy: headings, body, hints, disabled       |
- * | [LeonColors.textFieldColors]   | Form inputs, search bars, dropdowns                       |
- * | [LeonColors.switchDisabledColor] | Switch track / thumb when the component is disabled     |
- * | [LeonColors.unselectedIconColor] | Bottom-nav icons, unselected tabs, unchecked checkboxes |
- * | [LeonColors.scrimColor]        | Modal backdrop, bottom-sheet overlay, dialog dim          |
+ * | Field                           | Typical UI Elements                                        |
+ * |---------------------------------|------------------------------------------------------------|
+ * | [LeonColors.primaryColors]      | Main CTA buttons, active navigation, progress, links       |
+ * | [LeonColors.secondaryColors]    | Secondary actions, filters, alternative buttons, promo     |
+ * | [LeonColors.tertiaryColors]     | Calendar selections, accent chips, decorative highlights   |
+ * | [LeonColors.errorColors]        | Validation errors, destructive actions, critical alerts    |
+ * | [LeonColors.successColors]      | Success toasts, completed states, positive badges          |
+ * | [LeonColors.warningColors]      | Caution banners, unsaved changes, medium-severity alerts   |
+ * | [LeonColors.infoColors]         | Help tooltips, info banners, blue badges, hints            |
+ * | [LeonColors.backgroundColors]   | Page backgrounds, cards, dividers                          |
+ * | [LeonColors.textColors]         | All text hierarchy: headings, body, hints, disabled        |
+ * | [LeonColors.textFieldColors]    | Form inputs, search bars, dropdowns                        |
+ * | [LeonColors.switchDisabledColor]| Switch track / thumb when the component is disabled        |
+ * | [LeonColors.unselectedIconColor]| Bottom-nav icons, unselected tabs, unchecked checkboxes    |
+ * | [LeonColors.scrimColor]         | Modal backdrop, bottom-sheet overlay, dialog dim           |
+ *
+ * ── Fixed Colors (Material3 Expressive) ──────────────────
+ *
+ * | Field                           | Typical UI Elements                                        |
+ * |---------------------------------|------------------------------------------------------------|
+ * | [ThemedColors.fixed]            | Fixed container: consistent regardless of surface (banners, date picker) |
+ * | [ThemedColors.onFixed]          | Content on fixed container                                 |
+ * | [ThemedColors.fixedDim]         | Dimmed fixed container for layered emphasis                |
+ * | [ThemedColors.onFixedDim]       | Content on dimmed fixed container                          |
+ *
+ * If your project doesn't need fixed colors, map them to [ThemedColors.containerLight] / [ThemedColors.containerMedium]
+ * as sensible defaults — the bridge will use them automatically.
  */
 object LeonThemeBaseConfig : LeonThemeConfig {
 
@@ -114,22 +126,22 @@ object LeonThemeBaseConfig : LeonThemeConfig {
 
     object Palette {
         // Primary — Your brand's hero color
-        val Primary10 = Color(0xFFC3DBFF) // Very light tint (hover, badges)
-        val Primary50 = Color(0xFFC3DBFE) // Light tint (subtle backgrounds)
+        val Primary10  = Color(0xFFC3DBFF) // Very light tint (hover, badges)
+        val Primary50  = Color(0xFFC3DBFE) // Light tint (subtle backgrounds)
         val Primary100 = Color(0xFF0F6FFD) // Core brand color (buttons, links)
 
         // Secondary — Supporting accent
-        val Secondary10 = Color(0xFFE5F2CE)
-        val Secondary50 = Color(0xFFCCE59D)
+        val Secondary10  = Color(0xFFE5F2CE)
+        val Secondary50  = Color(0xFFCCE59D)
         val Secondary100 = Color(0xFF99CB3B)
 
         // Tertiary — Decorative / alternative accent (Material3 standard)
-        val Tertiary10 = Color(0xFFFFE5F0)
-        val Tertiary50 = Color(0xFFFFB3D9)
+        val Tertiary10  = Color(0xFFFFE5F0)
+        val Tertiary50  = Color(0xFFFFB3D9)
         val Tertiary100 = Color(0xFFFF66B2)
 
         // Neutral — Greys for structure, text, and disabled states
-        val Neutral50 = Color(0xFFFAFAFA) // Lightest surface
+        val Neutral50  = Color(0xFFFAFAFA) // Lightest surface
         val Neutral100 = Color(0xFFF5F5F5) // Light surface (cards in light mode)
         val Neutral200 = Color(0xFFEEEEEE) // Dividers (light)
         val Neutral225 = Color(0xFFE6E6E6) // Switch disabled track
@@ -143,14 +155,14 @@ object LeonThemeBaseConfig : LeonThemeConfig {
         val Neutral900 = Color(0xFF212121) // Dark-mode background
 
         // States — Feedback colors (keep semantic meaning, swap hues per brand)
-        val Success50 = Color(0xFFDFFFE1)
+        val Success50  = Color(0xFFDFFFE1)
         val Success100 = Color(0xFF08C86F)
-        val Error50 = Color(0xFFFEE6EC)
-        val Error100 = Color(0xFFE31414)
-        val Warning50 = Color(0xFFFDF7DE)
+        val Error50    = Color(0xFFFEE6EC)
+        val Error100   = Color(0xFFE31414)
+        val Warning50  = Color(0xFFFDF7DE)
         val Warning100 = Color(0xFFFBCA05)
-        val Info50 = Color(0xFFE3F2FD)
-        val Info100 = Color(0xFF2196F3)
+        val Info50     = Color(0xFFE3F2FD)
+        val Info100    = Color(0xFF2196F3)
     }
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -168,6 +180,15 @@ object LeonThemeBaseConfig : LeonThemeConfig {
                 onContainerMedium = Palette.Primary100,
                 containerLight = Palette.Primary10,
                 onContainerLight = Palette.Primary100,
+
+                // ── Fixed Colors ─────────────────────────────────────────────
+                // Default: Map to container values (no dedicated fixed palette)
+                // Override with distinct colors if your design system defines them
+                fixed = Palette.Primary10,       // ← containerLight fallback
+                onFixed = Palette.Primary100,    // ← onContainerLight fallback
+                fixedDim = Palette.Primary50,    // ← containerMedium fallback
+                onFixedDim = Palette.Primary100, // ← onContainerMedium fallback
+
                 disabled = Palette.Neutral300,
                 onDisabled = Color.White,
             ),
@@ -178,6 +199,13 @@ object LeonThemeBaseConfig : LeonThemeConfig {
                 onContainerMedium = Palette.Secondary100,
                 containerLight = Palette.Secondary10,
                 onContainerLight = Palette.Secondary100,
+
+                // Fixed: Default to container fallbacks
+                fixed = Palette.Secondary10,
+                onFixed = Palette.Secondary100,
+                fixedDim = Palette.Secondary50,
+                onFixedDim = Palette.Secondary100,
+
                 disabled = Palette.Neutral300,
                 onDisabled = Color.White,
             ),
@@ -188,6 +216,13 @@ object LeonThemeBaseConfig : LeonThemeConfig {
                 onContainerMedium = Palette.Tertiary100,
                 containerLight = Palette.Tertiary10,
                 onContainerLight = Palette.Tertiary100,
+
+                // Fixed: Default to container fallbacks
+                fixed = Palette.Tertiary10,
+                onFixed = Palette.Tertiary100,
+                fixedDim = Palette.Tertiary50,
+                onFixedDim = Palette.Tertiary100,
+
                 disabled = Palette.Neutral300,
                 onDisabled = Color.White,
             ),
@@ -249,6 +284,10 @@ object LeonThemeBaseConfig : LeonThemeConfig {
                 onContainerMedium = Color.Black,
                 containerLight = Palette.Primary10,
                 onContainerLight = Color.Black,
+                fixed = Palette.Primary10,
+                onFixed = Color.Black,
+                fixedDim = Palette.Primary50,
+                onFixedDim = Color.Black,
                 disabled = Palette.Neutral600,
                 onDisabled = Color.Black,
             ),
@@ -259,6 +298,10 @@ object LeonThemeBaseConfig : LeonThemeConfig {
                 onContainerMedium = Color.Black,
                 containerLight = Palette.Secondary10,
                 onContainerLight = Color.Black,
+                fixed = Palette.Secondary10,
+                onFixed = Color.Black,
+                fixedDim = Palette.Secondary50,
+                onFixedDim = Color.Black,
                 disabled = Palette.Neutral600,
                 onDisabled = Color.Black,
             ),
@@ -269,6 +312,10 @@ object LeonThemeBaseConfig : LeonThemeConfig {
                 onContainerMedium = Color.Black,
                 containerLight = Palette.Tertiary10,
                 onContainerLight = Color.Black,
+                fixed = Palette.Tertiary10,
+                onFixed = Color.Black,
+                fixedDim = Palette.Tertiary50,
+                onFixedDim = Color.Black,
                 disabled = Palette.Neutral600,
                 onDisabled = Color.Black,
             ),
@@ -339,6 +386,6 @@ object LeonThemeBaseConfig : LeonThemeConfig {
             labelExtraSmall = TypeToken(fontSize = 12.sp, lineHeight = 20.sp, fontWeight = FontWeight.Medium),
             bodyLarge       = TypeToken(fontSize = 16.sp, lineHeight = 20.sp, fontWeight = FontWeight.Normal),
             bodyMedium      = TypeToken(fontSize = 14.sp, lineHeight = 20.sp, fontWeight = FontWeight.Normal),
-            bodySmall       = TypeToken(fontSize = 12.sp, lineHeight = 17.sp, fontWeight = FontWeight.Normal)
+            bodySmall       = TypeToken(fontSize = 12.sp, lineHeight = 17.sp, fontWeight = FontWeight.Normal),
         )
 }

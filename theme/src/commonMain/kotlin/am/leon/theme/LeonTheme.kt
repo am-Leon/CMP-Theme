@@ -4,6 +4,8 @@ import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
@@ -19,7 +21,7 @@ import androidx.compose.ui.text.font.FontFamily
  *     Material3 components automatically inherit the app font and palette.
  *
  * To change the font or color palette for a different project, update
- * [LeonThemeConfig] only — no other file needs to change.
+ * the project's [LeonThemeConfig] implementation only — no engine file changes.
  */
 @Composable
 fun LeonTheme(
@@ -30,7 +32,8 @@ fun LeonTheme(
     val fontFamily = config.fontFamily()
     val typography = rememberLeonTypography(config.typeScale, fontFamily)
 
-    val materialColorScheme = colors.toMaterialColorScheme()
+    // Build Material3 bridges
+    val materialColorScheme = colors.toMaterialColorScheme(darkTheme)
     val materialTypography = rememberMaterialTypography(fontFamily)
 
     CompositionLocalProvider(
@@ -66,85 +69,123 @@ object LeonTheme {
 // Maps semantic LeonColors tokens to Material3 ColorScheme slots so that
 // Material3 components (Button, TextField, etc.) automatically use app colors.
 //
-// ┌──────────────────────┬────────────────────────────────────────────┐
-// │ Material3 Slot       │ LeonColors Source                           │
-// ├──────────────────────┼────────────────────────────────────────────┤
-// │ primary              │ primaryColors.base                         │
-// │ onPrimary            │ primaryColors.onBase                       │
-// │ primaryContainer     │ primaryColors.containerLight               │
-// │ onPrimaryContainer   │ primaryColors.onContainerLight             │
-// │ inversePrimary       │ primaryColors.containerMedium              │
-// │ secondary            │ secondaryColors.base                       │
-// │ onSecondary          │ secondaryColors.onBase                     │
-// │ secondaryContainer   │ secondaryColors.containerLight             │
-// │ onSecondaryContainer │ secondaryColors.onContainerLight           │
-// │ tertiary             │ tertiaryColors.base                        │
-// │ onTertiary           │ tertiaryColors.onBase                      │
-// │ tertiaryContainer    │ tertiaryColors.containerLight              │
-// │ onTertiaryContainer  │ tertiaryColors.onContainerLight            │
-// │ background           │ backgroundColors.background                │
-// │ onBackground         │ textColors.base                            │
-// │ surface              │ backgroundColors.surface                   │
-// │ onSurface            │ textColors.base                            │
-// │ surfaceVariant       │ backgroundColors.surface                   │
-// │ onSurfaceVariant     │ textColors.disabled                        │
-// │ surfaceTint          │ primaryColors.base                         │
-// │ inverseSurface       │ textColors.base                            │
-// │ inverseOnSurface     │ backgroundColors.background                │
-// │ error                │ errorColors.base                           │
-// │ onError              │ errorColors.onBase                         │
-// │ errorContainer       │ errorColors.container                      │
-// │ onErrorContainer     │ errorColors.onContainer                    │
-// │ outline              │ backgroundColors.stroke                    │
-// │ outlineVariant       │ backgroundColors.stroke                    │
-// │ scrim                │ scrimColor                                 │
-// └──────────────────────┴────────────────────────────────────────────┘
+// Uses copy() instead of constructor for forward-compatibility with new
+// Material3 Expressive roles without breaking on version updates.
+//
+// Includes **fixed container roles** (Material3 Expressive):
+// ┌─────────────────────────┬─────────────────────────────────────────────────┐
+// │ Material3 Slot          │ LeonColors Source                               │
+// ├─────────────────────────┼─────────────────────────────────────────────────┤
+// │ primary                 │ primaryColors.base                              │
+// │ onPrimary               │ primaryColors.onBase                            │
+// │ primaryContainer        │ primaryColors.containerLight                    │
+// │ onPrimaryContainer      │ primaryColors.onContainerLight                  │
+// │ inversePrimary          │ primaryColors.containerMedium                   │
+// │ primaryFixed            │ primaryColors.fixed                             │
+// │ primaryFixedDim         │ primaryColors.fixedDim                          │
+// │ onPrimaryFixed          │ primaryColors.onFixed                           │
+// │ onPrimaryFixedVariant   │ primaryColors.onFixedDim                        │
+// │ secondary               │ secondaryColors.base                            │
+// │ onSecondary             │ secondaryColors.onBase                          │
+// │ secondaryContainer      │ secondaryColors.containerLight                  │
+// │ onSecondaryContainer    │ secondaryColors.onContainerLight                │
+// │ secondaryFixed          │ secondaryColors.fixed                           │
+// │ secondaryFixedDim       │ secondaryColors.fixedDim                        │
+// │ onSecondaryFixed        │ secondaryColors.onFixed                         │
+// │ onSecondaryFixedVariant │ secondaryColors.onFixedDim                      │
+// │ tertiary                │ tertiaryColors.base                             │
+// │ onTertiary              │ tertiaryColors.onBase                           │
+// │ tertiaryContainer       │ tertiaryColors.containerLight                   │
+// │ onTertiaryContainer     │ tertiaryColors.onContainerLight                 │
+// │ tertiaryFixed           │ tertiaryColors.fixed                            │
+// │ tertiaryFixedDim        │ tertiaryColors.fixedDim                         │
+// │ onTertiaryFixed         │ tertiaryColors.onFixed                          │
+// │ onTertiaryFixedVariant  │ tertiaryColors.onFixedDim                       │
+// │ background              │ backgroundColors.background                     │
+// │ onBackground            │ textColors.base                                 │
+// │ surface                 │ backgroundColors.surface                        │
+// │ onSurface               │ textColors.base                                 │
+// │ surfaceVariant          │ backgroundColors.surface                        │
+// │ onSurfaceVariant        │ textColors.disabled                             │
+// │ surfaceTint             │ primaryColors.base                              │
+// │ inverseSurface          │ textColors.base                                 │
+// │ inverseOnSurface        │ backgroundColors.background                     │
+// │ error                   │ errorColors.base                                │
+// │ onError                 │ errorColors.onBase                              │
+// │ errorContainer          │ errorColors.container                           │
+// │ onErrorContainer        │ errorColors.onContainer                         │
+// │ outline                 │ backgroundColors.stroke                         │
+// │ outlineVariant          │ backgroundColors.stroke                         │
+// │ scrim                   │ scrimColor                                      │
+// └─────────────────────────┴─────────────────────────────────────────────────┘
 
-private fun LeonColors.toMaterialColorScheme(): ColorScheme = ColorScheme(
-    primary = primaryColors.base,
-    onPrimary = primaryColors.onBase,
-    primaryContainer = primaryColors.containerLight,
-    onPrimaryContainer = primaryColors.onContainerLight,
-    inversePrimary = primaryColors.containerMedium,
+private fun LeonColors.toMaterialColorScheme(isDark: Boolean): ColorScheme {
+    val base = if (isDark) darkColorScheme() else lightColorScheme()
 
-    secondary = secondaryColors.base,
-    onSecondary = secondaryColors.onBase,
-    secondaryContainer = secondaryColors.containerLight,
-    onSecondaryContainer = secondaryColors.onContainerLight,
+    return base.copy(
+        // ── Primary ─────────────────────────────────────────────────────────
+        primary = primaryColors.base,
+        onPrimary = primaryColors.onBase,
+        primaryContainer = primaryColors.containerLight,
+        onPrimaryContainer = primaryColors.onContainerLight,
+        inversePrimary = primaryColors.containerMedium,
 
-    tertiary = tertiaryColors.base,
-    onTertiary = tertiaryColors.onBase,
-    tertiaryContainer = tertiaryColors.containerLight,
-    onTertiaryContainer = tertiaryColors.onContainerLight,
+        // Fixed containers (Material3 Expressive)
+        primaryFixed = primaryColors.fixed,
+        primaryFixedDim = primaryColors.fixedDim,
+        onPrimaryFixed = primaryColors.onFixed,
+        onPrimaryFixedVariant = primaryColors.onFixedDim,
 
-    background = backgroundColors.background,
-    onBackground = textColors.base,
+        // ── Secondary ───────────────────────────────────────────────────────
+        secondary = secondaryColors.base,
+        onSecondary = secondaryColors.onBase,
+        secondaryContainer = secondaryColors.containerLight,
+        onSecondaryContainer = secondaryColors.onContainerLight,
 
-    surface = backgroundColors.surface,
-    onSurface = textColors.base,
-    surfaceVariant = backgroundColors.surface,
-    onSurfaceVariant = textColors.disabled,
-    surfaceTint = primaryColors.base,
-    inverseSurface = textColors.base,
-    inverseOnSurface = backgroundColors.background,
+        // Fixed containers
+        secondaryFixed = secondaryColors.fixed,
+        secondaryFixedDim = secondaryColors.fixedDim,
+        onSecondaryFixed = secondaryColors.onFixed,
+        onSecondaryFixedVariant = secondaryColors.onFixedDim,
 
-    error = errorColors.base,
-    onError = errorColors.onBase,
-    errorContainer = errorColors.container,
-    onErrorContainer = errorColors.onContainer,
+        // ── Tertiary ────────────────────────────────────────────────────────
+        tertiary = tertiaryColors.base,
+        onTertiary = tertiaryColors.onBase,
+        tertiaryContainer = tertiaryColors.containerLight,
+        onTertiaryContainer = tertiaryColors.onContainerLight,
 
-    outline = backgroundColors.stroke,
-    outlineVariant = backgroundColors.stroke,
+        // Fixed containers
+        tertiaryFixed = tertiaryColors.fixed,
+        tertiaryFixedDim = tertiaryColors.fixedDim,
+        onTertiaryFixed = tertiaryColors.onFixed,
+        onTertiaryFixedVariant = tertiaryColors.onFixedDim,
 
-    scrim = scrimColor,
-    surfaceBright = backgroundColors.surface,
-    surfaceDim = backgroundColors.surface,
-    surfaceContainer = backgroundColors.surface,
-    surfaceContainerHigh = backgroundColors.surface,
-    surfaceContainerHighest = backgroundColors.surface,
-    surfaceContainerLow = backgroundColors.background,
-    surfaceContainerLowest = backgroundColors.background,
-)
+        // ── Background / Surface ──────────────────────────────────────────
+        background = backgroundColors.background,
+        onBackground = textColors.base,
+
+        surface = backgroundColors.surface,
+        onSurface = textColors.base,
+        surfaceVariant = backgroundColors.surface,
+        onSurfaceVariant = textColors.disabled,
+        surfaceTint = primaryColors.base,
+        inverseSurface = textColors.base,
+        inverseOnSurface = backgroundColors.background,
+
+        // ── Error ───────────────────────────────────────────────────────────
+        error = errorColors.base,
+        onError = errorColors.onBase,
+        errorContainer = errorColors.container,
+        onErrorContainer = errorColors.onContainer,
+
+        // ── Outline ─────────────────────────────────────────────────────────
+        outline = backgroundColors.stroke,
+        outlineVariant = backgroundColors.stroke,
+
+        // ── Scrim ───────────────────────────────────────────────────────────
+        scrim = scrimColor,
+    )
+}
 
 // ── Material3 Typography Bridge ───────────────────────────────────────────────
 //

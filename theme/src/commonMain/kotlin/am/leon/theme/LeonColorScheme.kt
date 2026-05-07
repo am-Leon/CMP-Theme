@@ -29,6 +29,18 @@ data class ThemedColors(
     /** Content that sits **on top of** [containerLight]. */
     val onContainerLight: Color = Color.Unspecified,
 
+    /** Container consistent regardless of surface color (banners, date picker selections) */
+    val fixed: Color = Color.Unspecified,
+
+    /** Content that sits **on top of** [fixed]. */
+    val onFixed: Color = Color.Unspecified,
+
+    /** Dimmed fixed container. Layered emphasis below [fixed] */
+    val fixedDim: Color = Color.Unspecified,
+
+    /** Content that sits **on top of** [fixedDim]. */
+    val onFixedDim: Color = Color.Unspecified,
+
     /** Disabled state for interactive elements belonging to this color family. */
     val disabled: Color = Color.Unspecified,
 

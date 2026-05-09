@@ -42,8 +42,11 @@ mavenPublishing {
     // Publish to Maven Central Portal
     publishToMavenCentral()
 
-    // GPG sign all publications (required for Maven Central)
-    signAllPublications()
+    // Only sign if we are NOT publishing to mavenLocal
+    if (!project.gradle.startParameter.taskNames.any { it.contains("Local", ignoreCase = true) }) {
+        // GPG sign all publications (required for Maven Central)
+        signAllPublications()
+    }
 
     // Coordinates
     coordinates(
@@ -72,7 +75,15 @@ mavenPublishing {
                 id.set("am-Leon")
                 name.set("Abduelrahman Elemam")
                 email.set("abduelrahman.elemam@gmail.com")
+                organization.set("am-Leon")
+                organizationUrl.set("https://github.com/am-Leon")
             }
+        }
+
+        scm {
+            url = "https://github.com/am-Leon/CMP-Theme"
+            connection = "scm:git:git://github.com/am-Leon/CMP-Theme.git"
+            developerConnection = "scm:git:ssh://git@github.com/am-Leon/CMP-Theme.git"
         }
     }
 }
